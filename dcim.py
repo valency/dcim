@@ -17,20 +17,24 @@ class DCIM:
         for f in os.listdir(self.dir):
             ff = os.path.join(self.dir, f)
             if os.path.isfile(ff):
-                img = Image.open(ff)
-                exif_data = img.getexif()
-                if 306 in exif_data:
-                    i = 0
-                    ss = None
-                    while ss != ff and (i == 0 or os.path.isfile(ss)):
-                        s = 'IMG_' + exif_data[306].replace(':', '').replace(' ', '_')
-                        if i > 0:
-                            s += '_{}'.format(i)
-                        ss = os.path.join(self.dir, s + os.path.splitext(ff)[1].lower())
-                        i += 1
-                    if ss != ff:
-                        logging.info('%s %s %s', ff, '=>', ss)
-                        os.rename(ff, ss)
+                try:
+                    img = Image.open(ff)
+                    exif_data = img.getexif()
+                except:
+                    logging.warning('Skipping: %s', ff)
+                else:
+                    if 306 in exif_data:
+                        i = 0
+                        ss = None
+                        while ss != ff and (i == 0 or os.path.isfile(ss)):
+                            s = 'IMG_' + exif_data[306].replace(':', '').replace(' ', '_')
+                            if i > 0:
+                                s += '_{}'.format(i)
+                            ss = os.path.join(self.dir, s + os.path.splitext(ff)[1].lower())
+                            i += 1
+                        if ss != ff:
+                            logging.info('%s %s %s', ff, '=>', ss)
+                            os.rename(ff, ss)
 
 
 if __name__ == '__main__':
