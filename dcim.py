@@ -10,7 +10,7 @@ register_heif_opener()
 
 
 class DCIM:
-    keywords = ('QuickTime:CreationDate', 'EXIF:DateTimeOriginal')
+    keywords = ('QuickTime:CreationDate', 'QuickTime:CreateDate', 'EXIF:DateTimeOriginal')
 
     def __init__(self, dir):
         self.dir = dir
